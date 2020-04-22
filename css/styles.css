@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  background-color: #cbf1f5;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+  display: inline-block;
+  margin-bottom: 10px;
+  font-family: 'Pacifico', cursive;
+}
+
+p {
+  display: block;
+  margin-top: 10px;
+}
+
+.myname{
+  display: block;
+  position: relative;
+  padding-top: 100px
+}
+
+.cloud1{
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  top: 20px;
+  left: 200px;
+}
+
+.cloud2{
+  position: absolute;
+  left: 50px;
+}
+
+.cloudymountain {
+  position: relative;
+  display: inline-block;
+}
