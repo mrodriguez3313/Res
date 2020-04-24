@@ -1,2 +1,2 @@
 # Res
-Personal Website.... its silly on purpose
+Personal Website....https://mrodriguez3313.github.io/Res/
