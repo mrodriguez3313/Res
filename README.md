@@ -1,2 +1,1 @@
-# Res
-Personal Website.... its silly on purpose
+TinDog Starting Files
