@@ -1,1 +1,1 @@
-Simon Game-in progress. This branch holds the current project in my online course. Where I recreate the Simon game to practice my Jquery/javascript, CSS, html. With focus on using Jquery to add/remove elements, classes (for styling), sound effects, images, and more.
+Simon Game-in progress. This branch holds the current project in my online course. Where I recreate the Simon game to practice my Jquery/javascript, CSS, html. With focus on using Jquery to add/remove elements, classes (for styling), sound effects, images, and more. Will not merge to master.
