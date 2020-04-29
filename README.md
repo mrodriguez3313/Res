@@ -1,0 +1,1 @@
+Drum kit website-completed. This branch holds my version of drum kit website made in current online course. This was used to learn more indepth how to use javascript with html and css styling. As well as DOM manipulation. Learned (javascript website making specific usages) of anonymous classes, call-back functions, the DOM, event listeners, and more.
