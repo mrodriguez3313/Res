@@ -1,13 +1,59 @@
-var randomNumber1 = Math.floor(Math.random()*6)+1;
-var randomNumber2 = Math.floor(Math.random()*6)+1;
-console.log("rn1 "+randomNumber1);
-console.log("rn2 "+randomNumber2);
-document.querySelector(".img1").src="images/dice"+randomNumber1+".png";
-document.querySelector(".img2").src="images/dice"+randomNumber2+".png";
-if (randomNumber1 > randomNumber2){
-  document.querySelector("#target").innerText="Player1 Wins!";
-} else if (randomNumber2 > randomNumber1) {
-  document.querySelector("#target").innerText="Player2 Wins!";
-} else if (randomNumber1 == randomNumber2) {
-  document.querySelector("#target").innerText="Draw!";
+// Listens for mouse clicks on the respective button
+var nodeList = document.querySelectorAll(".drum");
+
+for (var i = 0; i < nodeList.length; i++) {
+  nodeList[i].addEventListener("click", function(){"click",
+  buttonsounds(this.innerText);
+  buttonAnimation(this.innerText);
+});
+}
+
+// Listens for key board presses
+document.addEventListener("keydown", function(){
+  buttonsounds(event.key);
+  buttonAnimation(event.key);
+
+});
+
+function buttonsounds(character){
+  switch (character) {
+    case "w":
+        var audio = new Audio("sounds/tom-1.mp3");
+        audio.play();
+      break;
+    case "a":
+      var audio = new Audio("sounds/tom-2.mp3");
+      audio.play();
+      break;
+    case "s":
+      var audio = new Audio("sounds/tom-3.mp3");
+      audio.play();
+      break;
+    case "d":
+      var audio = new Audio("sounds/tom-4.mp3");
+      audio.play();
+      break;
+    case "j":
+      var audio = new Audio("sounds/snare.mp3");
+      audio.play();
+      break;
+    case "k":
+      var audio = new Audio("sounds/kick-bass.mp3");
+      audio.play();
+      break;
+    case "l":
+      var audio = new Audio("sounds/crash.mp3");
+      audio.play();
+      break;
+    default:
+      console.log(this);
+  }
+}
+
+function buttonAnimation(character){
+  var buttonPressed = document.querySelector("." + character);
+  buttonPressed.classList.add("pressed");
+  setTimeout(function(){
+    buttonPressed.classList.remove("pressed");
+}, 100);
 }
