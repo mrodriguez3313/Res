@@ -1,2 +1,1 @@
-# Res
-Personal Website....https://mrodriguez3313.github.io/Res/
+This branch holds my project I created in my online course to create a newsletter sign-up page/app. Meant to teach me how to use api keys, UI design, and how js, html, css, combine together using node.js and express.js frameworks.
