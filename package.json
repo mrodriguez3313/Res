@@ -1,7 +1,7 @@
 {
   "name": "newletterapp",
   "version": "1.0.0",
-  "description": "Newslett application",
+  "description": "Newsletter application",
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.19.0",

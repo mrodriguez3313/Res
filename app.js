@@ -9,7 +9,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 var mailKey = process.env.mailChimp;
 var mailID = process.env.mailList;
-console.log(mailKey, mailID);
 
 app.get("/", function(req, res){
   res.sendFile(__dirname + "/signup.html");
