@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <%- include('partials/header'); -%>
-  <body>
-    <h1><%=page%></h1>
-    <p><%=introParagraph%></p>
-  </body>
+  <h1><%=page%></h1>
+  <p><%=introParagraph%></p>
+  <form action="/compose" method="get">
+    <button type="submit" class="btn btn-secondary">Write a Blog</button>
+  </form>
+
+  <h1>Your posts</h2>
+  <%posts.forEach(function(element){ %>
+    <h2><%=element.postTitle%></h3>
+    <p><%=element.postBody.substring(0,100) + "... "%><a href="/posts/<%=element.postTitle%>">Read more</a></p>
+
+    <% }) %>
 <%- include('partials/footer'); -%>
