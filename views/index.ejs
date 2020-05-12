@@ -10,18 +10,21 @@
   <body>
     <div class="box" id="heading">
       <h1><%=kindofDay%></h1>
-      <p>Any plans? Add them here!</p>
+      <p><%=listName%> + to-do list</p>
     </div>
     <div class="box">
-      <% for(var i=0; i<item.length; i++){%>
-        <div class="item">
-          <input type="checkbox">
-          <p><%=item[i]%></p>
-        </div>
-      <%}%>
+      <%list.forEach(function(element){%>
+        <form action="/delete" method="post">
+          <div class="item">
+            <input type="checkbox" onchange="this.form.submit()" value="<%= element._id %>" name="checkbox">
+            <p><%=element.name%></p>
+          </div>
+        </form>
+
+      <%});%>
       <form class="item" action="/" method="post">
           <input type="text" name="item" placeholder="New Item" aria-label="New Item" aria-describedby="basic-addon2" autocomplete="off">
-          <button type="submit" name="submit">+</button>
+          <button type="submit" name="list" value="<%=listName%>">+</button>
       </form>
     </div>
 
