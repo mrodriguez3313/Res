@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const lo = require("lodash");
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -9,7 +11,7 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 const port = 8080;
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false });
+mongoose.connect(/*'mongodb://localhost:27017'*/"mongodb+srv://Admin-Marco:"+ process.env.mongoDBPass +"@cluster0-aec2b.mongodb.net/todolistDB", { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false });
 
 // Schema initializations
 var itemsSchema = {
@@ -29,11 +31,11 @@ const List = mongoose.model("List", listSchema);
 
 // Default items
 const listItem1 = new Item({
-  name: "shopping"
+  name: "Welcome to your todolist!"
 });
 
 const listItem2 = new Item({
-  name:"Hit plus button to add a new item"
+  name:"Hit the + button to add a new item"
 });
 
 const listItem3 = new Item({
@@ -74,7 +76,7 @@ app.get("/:customList", function(req, res){
   const options = { weekday: 'long', month: 'long', day: 'numeric'};
   var currentDay = today.toLocaleDateString('en-US', options);
   var day = currentDay;
-  const customListName = req.params.customList;
+  const customListName = lo.capitalize(req.params.customList);
   // console.log(customListName);
   List.findOne({name: customListName}, function(err, foundList){
     if (!err) {
@@ -103,15 +105,17 @@ app.post("/", function(req, res){
   const item = new Item({
     name: itemName
   });
-  if (listName === "Today"){
+  if (listName === "Main"){
+    console.log("adding to home");
     item.save();
     res.redirect("/");
   } else {
     List.findOne({name: listName}, function(err, foundList) {
       foundList.items.push(item);
+      console.log("adding to customList");
       foundList.save();
       res.redirect("/"+ listName);
-    } );
+    });
   }
 
 });
