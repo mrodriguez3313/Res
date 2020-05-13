@@ -21,11 +21,11 @@ var itemsSchema = {
 var Item = mongoose.model("Item", itemsSchema);
 
 
-const ListSchema = {
+const listSchema = {
   name: String,
   items: [itemsSchema]
 };
-const List = mongoose.model("List", ListSchema);
+const List = mongoose.model("List", listSchema);
 
 // Default items
 const listItem1 = new Item({
@@ -66,7 +66,7 @@ app.get("/", function(req, res){
     } else {
       res.render("index", {kindofDay: day, listName: "Main", list:foundItems});
      }
-  })
+  });
 });
 
 app.get("/:customList", function(req, res){
@@ -113,21 +113,28 @@ app.post("/", function(req, res){
       res.redirect("/"+ listName);
     } );
   }
-  // console.log("button works");
-  // console.log("User input: " + itemName);
+
 });
 
 app.post("/delete", function(req, res){
   const checkedBox = req.body.checkbox;
-  Item.findByIdAndRemove(checkedBox, function(err){
-    if (err){
-      console.log(err);
-    } else {
-      console.log("Successfully deleted " + checkedBox);
-    }
-  });
-  res.redirect("/");
-})
+  const listName = req.body.listName;
+  console.log(checkedBox + " " + listName);
+  if (listName === "Main") {
+    Item.findByIdAndRemove(checkedBox, function(err){
+      if (!err) {
+        console.log("Successfully deleted checked item.");
+        res.redirect("/");
+      }
+    });
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedBox}}}, function(err, foundList){
+      if (!err){
+        res.redirect("/" + listName);
+      }
+    });
+  }
+});
 
 app.listen(port, function(){
   console.log("server running on port " + port)
