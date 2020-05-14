@@ -8,8 +8,8 @@
 
   <h1>Your posts</h2>
   <%posts.forEach(function(element){ %>
-    <h2><%=element.postTitle%></h3>
-    <p><%=element.postBody.substring(0,100) + "... "%><a href="/posts/<%=element.postTitle%>">Read more</a></p>
+    <h2><%=element.blogTitle%></h3>
+    <p><%=element.blogBody.substring(0,100) + "... "%><a href="/posts/<%=element.blogTitle%>">Read more</a></p>
 
     <% }) %>
 <%- include('partials/footer'); -%>

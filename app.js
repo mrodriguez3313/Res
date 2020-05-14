@@ -3,33 +3,69 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-var lo = require('lodash');
+const lo = require('lodash');
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const port = 8080;
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
 const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
 let posts = [];
+mongoose.connect("mongodb+srv://Admin-Marco:"+ process.env.mongoDBPass +"@cluster0-aec2b.mongodb.net/blogpostDB", { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true })
 const app = express();
+
+const blogpostSchema = {
+  blogTitle: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  blogBody: String
+};
+const Post = mongoose.model("Post", blogpostSchema);
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+
+
+
+
 app.get("/", function(req, res) {
-  res.render("home", {page: "Home", introParagraph: homeStartingContent, posts: posts});
+    Post.find({}, function(err, foundItems){
+      if (err){
+        console.log("error: in finding items in db");
+        res.render("home", {page: "Home", introParagraph: homeStartingContent, posts: []});
+      } else {
+        console.log("foundItems array: ");
+        console.log(foundItems);
+        res.render("home", {page: "Home", introParagraph: homeStartingContent, posts: foundItems});
+      }
+    });
 });
 
 app.get("/posts/:query", function(req, res) {
-  const query = req.params.query;
+  const query = lo.capitalize(lo.lowerCase(req.params.query));
   console.log(query);
-  posts.forEach(function(element){
-    if(lo.lowerCase(query) === lo.lowerCase(element.postTitle)){
-      console.log("Match found!");
-      res.render("post", {pageTitle: element.postTitle, postContent: element.postBody})
+  Post.find({ blogTitle: query}, function(err, foundItem){
+    if (err){
+      console.log("Sorry, no match found?");
     }
+    console.log("Match found!");
+    console.log(foundItem);
+    res.render("post", {pageTitle: foundItem[0].blogTitle, postContent: foundItem[0].blogBody})
   });
+
+
+  // posts.forEach(function(element){
+  //   if(lo.lowerCase(query) === lo.lowerCase(element.blogTitle)){
+  //     console.log("Match found!");
+  //     res.render("post", {pageTitle: element.blogTitle, postContent: element.blogBody})
+  //   }
+  // });
 });
 
 app.get("/about", function(req, res) {
@@ -45,14 +81,17 @@ app.get("/compose", function(req, res) {
 });
 
 app.post("/compose", function(req, res) {
-  const post = {
-    postTitle: req.body.blogTitle,
-    postBody: req.body.blogBody
-  };
-  posts.push(post);
-  // console.log(posts);
-  res.redirect("/");
-})
+  const newPost = new Post({
+    blogTitle: lo.capitalize(lo.lowerCase(req.body.blogTitle)),
+    blogBody: req.body.blogBody
+  });
+  newPost.save(function(err) {
+    if (err) {
+      console.log("There was an error saving your post!");
+    }
+    res.redirect("/");
+  });
+});
 
 app.listen(port, function() {
   console.log("Server started on port " + port);
