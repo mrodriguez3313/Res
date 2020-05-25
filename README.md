@@ -2,4 +2,4 @@ This repository is a hodge podge of different projects. It is my progress throug
 React progress: rendering w /React: https://4p6qt.csb.app/
 useState: https://0c4xi.csb.app/
 destructering arrays && objects: https://pzy24.csb.app/
-React forms, complex state changes: https://229nz.csb.app/
+React forms, complex state changes: https://229nz.csb.app/... improved: https://229nz.csb.app/
